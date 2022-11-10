@@ -1,22 +1,19 @@
 'use strict';
 
 {
-  const target = document.querySelector('img');
+  const targets = document.querySelectorAll('img');
 
-  function callback(entries) {
-    console.log(entries[0]);
+  function callback(entries, obs) {
+    console.log(entries);
 
-    if (!entries[0].isIntersecting) {
-      return;
-    }
-
-    entries[0].target.classList.add('appear');
-
-    // if (entries[0].isIntersecting) {
-    //   entries[0].target.classList.add('appear');
-    // } else {
-    //   entries[0].target.classList.remove('appear');
-    // }
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) {
+        return;
+      }
+  
+      entry.target.classList.add('appear');
+      obs.unobserve(entry.target);
+    });
   }
 
   const options = {
@@ -25,5 +22,7 @@
 
   const observer = new IntersectionObserver(callback, options);
 
-  observer.observe(target);
+  targets.forEach(target => {
+    observer.observe(target);
+  });
 }
